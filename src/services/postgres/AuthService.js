@@ -1,6 +1,5 @@
 const autoBind = require('auto-bind')
 const { Pool } = require('pg')
-const { query_timeout } = require('pg/lib/defaults')
 const InvariantError = require('../../exceptions/InvariantError')
 
 class AuthService {
