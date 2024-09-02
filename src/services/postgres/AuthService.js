@@ -16,7 +16,7 @@ class AuthService {
       values: [token],
     }
 
-  const result = await this._pool.query(query)    
+  await this._pool.query(query)    
   }
 
   async verifyRefreshToken(token) {
@@ -34,8 +34,11 @@ class AuthService {
 
   async deleteRefreshToken(token) {
     const query = {
-      text: 
+      text: 'DELETE FROM authentications WHERE token = $1',
+      values: [token],
     }
+
+    await this._pool.query(query)
   }
 }
 
