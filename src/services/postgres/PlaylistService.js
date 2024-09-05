@@ -50,13 +50,6 @@ class playlistService {
     return playlist
     }
 
-  // under dev
-  async getPlaylistSongs(id) {
-    const query = {
-      text: 'SELECT * FROM playlists WHERE id = $1'
-    }
-  }
-
   async deletePlaylist(id) {
     const query = {
       text: 'DELETE FROM playlists WHERE id = $1 RETURNING id',
