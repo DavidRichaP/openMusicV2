@@ -5,8 +5,9 @@ const InvariantError = require('../../exceptions/InvariantError')
 const NotFoundError = require('../../exceptions/NotFoundError')
 
 class playlistService {
-  constructor() {
+  constructor(collaborationService) {
     this._pool = new Pool()
+    this._collaborationService = collaborationService
     
     autoBind(this)
   }
@@ -80,6 +81,22 @@ class playlistService {
 
     if (!result.rowCount) {
       throw new NotFoundError('Delete Failed')
+    }
+  }
+
+  async verifyPlaylistAccess(playlistId, userId) {
+    try {
+      await this._collaborationService.verifyCollaborator(playlistId, userId)
+    } catch (error) {
+      if (error instanceof NotFoundError) {
+        throw error
+      }
+    }
+
+    try {
+      await this._collaborationService.verifyCollaborator(playlistId, userId)
+    } catch {
+      throw error
     }
   }
 }
