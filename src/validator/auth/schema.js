@@ -9,7 +9,7 @@ const putAuthPayloadSchema = Joi.object({
   refreshToken: Joi.string().required(),
   })
 
-const deleteAuthPayloadSchema = joi.object({
+const deleteAuthPayloadSchema = Joi.object({
   refreshToken: Joi.string().required(),
   })
  
