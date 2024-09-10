@@ -1,4 +1,4 @@
-const playlistRoutes = (handler) => [
+const routes = (handler) => [
   {
     method: 'POST',
     path: '/playlists',
@@ -18,11 +18,35 @@ const playlistRoutes = (handler) => [
   {
     method: 'DELETE',
     path: '/playlists/{id}',
-    handler: handler.,
+    handler: handler.deletePlaylistByIdHandler,
     options: {
       auth: 'openmusic_jwt'
     },
   },
+  {
+    method: 'POST',
+    path: '/playlists/{id}/songs',
+    handler: handler.postPlaylistSongByIdHandler,
+    options: {
+      auth: 'openmusic_jwt',
+    },
+  },
+  {
+    method: 'GET',
+    path: '/playlists/{id}/songs',
+    handler: handler.getPlaylistSongsByIdHandler,
+    options: {
+      auth: 'openmusic_jwt',
+    },
+  },
+  {
+    method: 'DELETE',
+    path: '/playlists/{id}/songs',
+    handler: handler.deletePlaylistSongByIdHandler,
+    options: {
+      auth: 'openmusic_jwt',
+    },
+  },
 ]
 
-module.exports = playlistRoutes
+module.exports = routes
