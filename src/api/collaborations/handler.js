@@ -1,11 +1,11 @@
-const ClientError = require('../../exceptions/ClientError')
 const autoBind = require("auto-bind")
 
 class CollaborationsHandler {
-  constructor(collaborationsService, playlistService, playlistSongService, validator) {
-    this._collaborationsService = collaborationsService
+  constructor(collaborationService, playlistService, playlistSongService, userService, validator) {
+    this._collaborationsService = collaborationService
     this._playlistService = playlistService
     this._playlistSongService = playlistSongService
+    this._userService = userService
     this._validator = validator
 
     autoBind(this)
@@ -14,11 +14,12 @@ class CollaborationsHandler {
   async postCollaborationHandler(request, h) {
     this._validator.validateCollaborationPayload(request.payload)
     const { id: credentialId } = request.auth.credentials
-    const { noteId, userId } = request.payload
+    const { playlistId, userId } = request.payload
     
-    await this._playlistService.verifyPlaylistAccess(noteId, credentialId)
+    await this._userService.verifyUserExist(userId)
+    await this._playlistService.verifyPlaylistOwner(playlistId, credentialId)
 
-    const collaborationId = await this._collaborationsService.addCollaboration(noteId, userId)
+    const collaborationId = await this._collaborationsService.addCollaboration(playlistId, userId)
 
     const response = h.response({
       status: 'success',
@@ -34,10 +35,10 @@ class CollaborationsHandler {
   async deleteCollaborationHandler(request, h) {
     this._validator.validateCollaborationPayload(request.payload)
     const { id: credentialId } = request.auth.credentials
-    const { noteId, userId } = request.payload
+    const { playlistId, userId } = request.payload
     
-    await this._playlistService.verifyPlaylistAccess(noteId, credentialId)
-    await this._collaborationsService.deleteCollaboration(noteId, userId)
+    await this._playlistService.verifyPlaylistOwner(playlistId, credentialId)
+    await this._collaborationsService.deleteCollaboration(playlistId, userId)
 
     return {
       status: 'success',

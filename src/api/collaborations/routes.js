@@ -1,4 +1,4 @@
-const routes = (handler) => {
+const routes = (handler) => [
   {
     method: 'POST',
     path: '/collaborations',
@@ -15,6 +15,6 @@ const routes = (handler) => {
       auth: 'openmusic_jwt',
     },
   }
-}
+]
 
 module.exports = routes
