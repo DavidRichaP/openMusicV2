@@ -1,4 +1,3 @@
-const { server } = require("@hapi/hapi")
 const CollaborationsHandler = require("./handler")
 const routes = require('./routes')
 

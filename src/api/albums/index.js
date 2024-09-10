@@ -1,4 +1,3 @@
-const { version } = require('joi')
 const AlbumsHandler = require('./handler')
 const routes = require('./routes')
 

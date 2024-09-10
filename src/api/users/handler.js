@@ -3,7 +3,7 @@ const autoBind = require('auto-bind')
 class userHandler {
   constructor(service, validator) {
     this._service = service.user
-    this._validator = validator.user 
+    this._validator = validator.user
     
     autoBind(this)
   }
@@ -26,7 +26,7 @@ class userHandler {
     return response
   }
 
-  async getUserByIdHandler(request, h) {
+  async getUserByIdHandler(request) {
 
     const { id } =request.params
 

@@ -8,7 +8,6 @@ class AlbumHandler {
 		autoBind(this)
 	}
 
-	// from post to delete these are the handlers for album
 	async postAlbumHandler(request, h) {
 		this._validator.validateAlbumsPayload(request.payload)
 
@@ -25,7 +24,7 @@ class AlbumHandler {
 		})
 		response.code(201)
 		return response
-		}
+	}
 
 	async getAlbumsHandler() {
 		const albums = await this._service.getAlbums()
@@ -37,7 +36,7 @@ class AlbumHandler {
 		}
 	}
 
-	async getAlbumByIdHandler(request, h) {
+	async getAlbumByIdHandler(request) {
 		const { id } = request.params
 		const album = await this._service.getAlbumById(id)
 		return {
@@ -48,7 +47,7 @@ class AlbumHandler {
 		}
 	}
 
-	async putAlbumByIdHandler(request, h) {
+	async putAlbumByIdHandler(request) {
 
 			this._validator.validateAlbumsPayload(request.payload)
 
@@ -63,7 +62,7 @@ class AlbumHandler {
 
 	}
 
-	async deleteAlbumByIdHandler(request, h) {
+	async deleteAlbumByIdHandler(request) {
 	
 		const { id } = request.params
 		await this._service.deleteAlbumById(id)

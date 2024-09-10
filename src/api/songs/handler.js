@@ -8,7 +8,6 @@ class SongHandler {
 		autoBind(this)
 	}
 
-	// from post to delete these are the handlers for songs
 	async postSongHandler(request, h) {
 		this._validator.validateSongsPayload(request.payload)
 
