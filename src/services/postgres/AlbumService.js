@@ -7,8 +7,6 @@ const {
 	mapDBToModelAlbumSimple,
 } = require('../../utils/entityAlbum')
 
-// add database to insert to
-
 class AlbumService {
 	constructor() {
 		this._pool = new Pool()
@@ -20,8 +18,8 @@ class AlbumService {
 		const createdAt = new Date().toISOString()
 
 		const query = {
-			text: 'INSERT INTO albums values ($1, $2, $3, $4) RETURNING id',
-			values: [id, name, year, createdAt],
+			text: 'INSERT INTO albums values ($1, $2, $3, $4, $5) RETURNING id',
+			values: [id, name, year, createdAt, createdAt],
 		}
 
 		const result = await this._pool.query(query)
