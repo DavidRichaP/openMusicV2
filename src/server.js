@@ -16,6 +16,10 @@ const userValidator = require('./validator/users')
 const users = require('./api/users')
 
 // playlist
+const PlaylistService = require('./services/postgres/PlaylistService')
+const playlistValidator = require('./validator/playlist')
+const playlistSongValidator = require('./validator/playlistSongs')
+const playlists = require('./api/playlist')
 
 // auth
 const auth = require('./api/auth')
@@ -38,9 +42,11 @@ const init = async () => {
 	const userService = new UserService()
 	const authService = new AuthService()
 	const collaborationService = new CollaborationsService()
+	const playlistService = new PlaylistService(collaborationService)
+
 	const server = Hapi.server({
-		port: process.prod.env.PORT,
-		host: process.prod.env.HOST,
+		port: process.env.PORT,
+		host: process.env.HOST,
 		routes: {
 			cors: {
 				origin: ['*'],
@@ -53,10 +59,12 @@ const init = async () => {
 		{
 			plugin: users,
 			options: {
-				user: userService,
-			},
-			validator: {
-				user: userValidator,
+				service: {
+					user: userService,
+				},
+				validator: {
+					user: userValidator,
+				},
 			},
 		},
 		{
@@ -123,7 +131,21 @@ const init = async () => {
 					validator: collaborationsValidator
 				}
 			}
-		}
+		},
+		{
+			plugin: playlists,
+			options: {
+				service: {
+					playlist: playlistService,
+					user: userService,
+					song: openMusicSongs,
+				},
+				validator: {
+					playlist: playlistValidator,
+					playlistSong: playlistSongValidator,
+				},
+			},
+		},
 	])
 
 	server.ext('onPreResponse', (request, h) => {
@@ -141,7 +163,7 @@ const init = async () => {
 
 		return h.continue
 	})
-
+	
 	await server.start()
 	console.log(`Server berjalan pada ${server.info.uri}`)
 }
